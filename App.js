@@ -1,26 +1,22 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import Cep from './components/Cep';
-import Api from './components/Api';
+import axios from 'axios';
+import Cot from './components/Cot';
 
 export default function App() {
   const [valor, setValor] = useState(0);
-	
-  async function Consulta(){
-	  const response = await Api.get('json/last/USD-BRL');
-    setValor(response.data.USDBRL);
-  }
+
   return (
 		<View style={styles.container}>
       <Text style={styles.texto}> Cotação de moedas </Text>
       <TouchableOpacity 
         style={styles.botao}
-        onPress={Consulta}
+        onPress={()=>axios.get('https://economia.awesomeapi.com.br/json/last/USD-BRL').then((response)=>setValor(response.data.USDBRL))}
       >
       <Text style={styles.textoBotao}> Dólar para Real </Text>  
       </TouchableOpacity>
 
-      <Cep data={valor}/>
+      <Cot data={valor}/>
     </View>
   );
 }
@@ -42,7 +38,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#000',
     marginBottom: 10,
-    marginTop: 10
+    marginTop: 10,
   },
   textoBotao:{
     color: '#fff',
